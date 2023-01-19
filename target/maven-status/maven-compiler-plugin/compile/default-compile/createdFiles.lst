@@ -1,0 +1,6 @@
+org\example\pages\RegisterPage.class
+org\example\support\EmailResponse.class
+org\example\pages\ConfirmEmailAndPhonePage.class
+org\example\pages\BasePage.class
+org\example\steps\RegisterPageSteps.class
+org\example\support\Constans.class
