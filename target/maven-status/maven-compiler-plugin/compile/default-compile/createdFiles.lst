@@ -1,2 +1,4 @@
 org\example\pages\RegisterPage.class
-org\example\BasePage.class
+org\example\pages\ConfirmEmailAndPhonePage.class
+org\example\pages\BasePage.class
+org\example\steps\RegisterPageSteps.class

@@ -1,5 +1,6 @@
 package org.example.steps;
 
+import org.example.pages.ConfirmEmailAndPhonePage;
 import org.example.pages.RegisterPage;
 
 public class RegisterPageSteps {
@@ -75,5 +76,16 @@ public class RegisterPageSteps {
         registerPage.changeCountryTo(text);
         return this;
     }
+
+    public ConfirmEmailAndPhonePage registerUser(){
+        registerPage.clickRegisterButton();
+        return new ConfirmEmailAndPhonePage();
+    }
+
+    public String getErrorTextTermsOfUse(){
+        return registerPage.getTextErrorForTermsOfUse();
+    }
+    public String getTextErrorForPhoneNumber(){ return registerPage.getTextErrorForPhoneNumber(); }
+    public String getTextErrorForEmailAddress(){ return registerPage.getTextErrorForEmailAddress(); }
 
 }

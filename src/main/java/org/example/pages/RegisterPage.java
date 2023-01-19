@@ -12,6 +12,10 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class RegisterPage extends BasePage {
 
+    public RegisterPage(){
+        BasePage.openRegisterPage();
+    }
+
     SelenideElement countryDropDown() {
         return $(By.id("country"));
     }
@@ -57,24 +61,30 @@ public class RegisterPage extends BasePage {
         return $(By.id("button_subscribe"));
     }
 
-    SelenideElement educationTextLabel(){
+    SelenideElement educationTextLabel() {
         return $(By.cssSelector("#custom_label_field___label_education_linked > p:nth-child(2)"));
     }
 
-    SelenideElement individualTextLabel(){
+    SelenideElement individualTextLabel() {
         return $(By.cssSelector("#register_individual_warning_label_form_text_paragraph > div > p"));
     }
 
-    SelenideElement soleTraderTextLabel(){
+    SelenideElement soleTraderTextLabel() {
         return $(By.cssSelector("#register_sole_trader_warning_label_form_text_paragraph > div > p"));
     }
-    SelenideElement cookieAccept = $(By.cssSelector("a[id=cookies-read-more-link]"));
 
-    private SelenideElement getAccountTypeCheckBoxBy(String text){
-        return $(By.id("register_account_type_"+text+"_form_input"));
+    SelenideElement cookieAccept = $(By.cssSelector("a[id=cookies-read-more-link]"));
+    SelenideElement errorForTermsOfUse(){
+        return $(By.id("register_terms_of_use_agree_error"));
+    }
+    SelenideElement errorForPhoneNumber() {return $(By.id("register___pin_mobile_number_mobile_phone_error"));}
+    SelenideElement errorForEmailAddress() {return $(By.id("register_email_error"));}
+
+    private SelenideElement getAccountTypeCheckBoxBy(String text) {
+        return $(By.id("register_account_type_" + text + "_form_input"));
     }
 
-    public String getEducationTextLabel(){
+    public String getEducationTextLabel() {
         return educationTextLabel().getText();
     }
 
@@ -86,8 +96,17 @@ public class RegisterPage extends BasePage {
         return soleTraderTextLabel().getText();
     }
 
-    public void setAccountType(String text){
+    public void setAccountType(String text) {
         getAccountTypeCheckBoxBy(text).click();
+    }
+
+    public String getTextErrorForTermsOfUse(){
+        return errorForTermsOfUse().getText();
+    }
+
+    public String getTextErrorForPhoneNumber() {return errorForPhoneNumber().getText(); }
+    public String getTextErrorForEmailAddress(){
+        return errorForEmailAddress().getText();
     }
 
     public void sendKeysToFirstName(String text) {
@@ -106,7 +125,7 @@ public class RegisterPage extends BasePage {
         phoneNumberInput().sendKeys(text);
     }
 
-    public void selectPrefixForPhone(String text){
+    public void selectPrefixForPhone(String text) {
         phoneNumbberPrefixDropDown().selectOptionContainingText(text);
     }
 
@@ -123,47 +142,47 @@ public class RegisterPage extends BasePage {
     }
 
     public void cookieAccept(boolean click) {
-        if(click) cookieAccept.click();
+
+        if (click && cookieAccept.isDisplayed()) cookieAccept.click();
     }
 
     public void changeCountryTo(String text) {
         countryDropDown().selectOptionContainingText(text);
     }
 
-    public void clickRegisterButton(){
+    public void clickRegisterButton() {
         registerButton().click();
     }
+
     private String getCaptchaText() {
         return captchaQuestion().getText();
     }
 
     public String getSolveCapthca() {
         try {
-           return solveCaptcha();
-        }catch (Exception e){
+            return solveCaptcha();
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
 
-    public void fillSolvedCapthca(){
+    public void fillSolvedCapthca() {
         fillCapthca(getSolveCapthca());
     }
 
-    private void fillCapthca(String text){
+    private void fillCapthca(String text) {
         captchaAnswer().sendKeys(text);
     }
 
     private String solveCaptcha() throws ScriptException {
-        String capthca = getCaptchaText().replace("=","");
+        String capthca = getCaptchaText().replace("=", "");
 
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
         return engine.eval(capthca).toString();
     }
-
-
 
 
 }

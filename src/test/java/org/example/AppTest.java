@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.pages.ConfirmEmailAndPhonePage;
 import org.example.pages.RegisterPage;
 import org.example.steps.RegisterPageSteps;
 import org.openqa.selenium.WebDriver;
@@ -37,19 +38,31 @@ public class AppTest
     }
 
     @Test
-    public void fillInWithData(){
-        registerPageSteps
+    public void fillInWithDataAndRegister(){
+        ConfirmEmailAndPhonePage confirmEmailAndPhonePage = fillInWithData();
+
+        Assert.assertEquals(confirmEmailAndPhonePage.getCheckEmailLabelText(),"Check your mail","The Check your mail label is not present");
+        Assert.assertEquals(confirmEmailAndPhonePage.currentPageTitle(),"Email and Mobile Number Verification","The page title is not Email and Mobile Number Verification");
+
+    }
+
+    private ConfirmEmailAndPhonePage fillInWithData(){
+
+        return registerPageSteps
                 .setAccountType("partnership")
                 .insertTextToFirstName("Test")
                 .insertTextToFirstLastName("Tester")
-                .insertTextToEmail("Hey@Oh.ho")
+                .insertTextToEmail("H6356556ey@Oh.ho")
                 .selectCountry("Iceland")
                 .insertTextToPhone("98312039123")
                 .selectDropDownPhonePrefix("Hungary")
                 .selectMarketingCheckBox(true)
                 .selectTermsOfUseCheckBox(true)
-                .insertSolvedCaptcha();
+                .insertSolvedCaptcha()
+                .registerUser();
     }
+
+
 
 
 }
