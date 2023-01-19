@@ -1,14 +1,12 @@
 package org.example;
 
 import org.example.pages.ConfirmEmailAndPhonePage;
-import org.example.pages.RegisterPage;
+import org.example.steps.CreatePasswordPageSteps;
 import org.example.steps.RegisterPageSteps;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.example.support.EmailResponse;
+import org.example.support.TempEmail;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import javax.script.ScriptException;
 
 
 public class AppTest 
@@ -62,7 +60,33 @@ public class AppTest
                 .registerUser();
     }
 
+    private ConfirmEmailAndPhonePage fillInWithDataAndSpecificEmail(String email){
+        return registerPageSteps
+                .setAccountType("partnership")
+                .insertTextToFirstName("Test")
+                .insertTextToFirstLastName("Tester")
+                .insertTextToEmail(email)
+                .selectCountry("Iceland")
+                .insertTextToPhone("98312039123")
+                .selectDropDownPhonePrefix("Hungary")
+                .selectMarketingCheckBox(true)
+                .selectTermsOfUseCheckBox(true)
+                .insertSolvedCaptcha()
+                .registerUser();
+    }
+
+    @Test
+    public void testing(){
+        TempEmail tempEmail = new TempEmail();
+        String email = tempEmail.getEmail();
+
+        fillInWithDataAndSpecificEmail(email);
+
+        EmailResponse emailResponse = tempEmail.call();
+
+        String link = emailResponse.getActivationLink();
+        CreatePasswordPageSteps createPasswordPageStep2s = new CreatePasswordPageSteps(link);
 
 
-
+    }
 }

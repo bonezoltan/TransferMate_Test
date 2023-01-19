@@ -176,7 +176,8 @@ public class RegisterPage extends BasePage {
     }
 
     private String solveCaptcha() throws ScriptException {
-        String capthca = getCaptchaText().replace("=", "");
+        //Preprocessing String for JS Executer
+        String capthca = getCaptchaText().replace("=", "").replace("", " ").trim();
 
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
