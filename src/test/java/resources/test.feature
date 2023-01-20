@@ -98,4 +98,4 @@ Feature: Test TransferMate SignUp Page functionality
     Then Mobile Phone Number field is highlighted with a label Already exists
     Examples: Sign up credentials we are going to use in this scenario
       | accountType |   country | firstName | lastName |       email                    | countryPrefix | phoneNumber |
-      | education   |  Austria  | Edu       | Cation   | edu_cat64346534ion@tester.com   | Austria       | 43423424234          |
+      | education   |  Austria  | Edu       | Cation   | edu_cat64346534ion@tester.com   | Austria      |  43423424234|

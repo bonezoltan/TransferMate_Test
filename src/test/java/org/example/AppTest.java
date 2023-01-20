@@ -1,12 +1,16 @@
 package org.example;
 
 import org.example.pages.ConfirmEmailAndPhonePage;
+import org.example.pages.VerifyPhoneNumberPage;
 import org.example.steps.CreatePasswordPageSteps;
 import org.example.steps.RegisterPageSteps;
 import org.example.support.EmailResponse;
 import org.example.support.TempEmail;
+import org.example.support.TwilioSMSHandler;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 
 public class AppTest 
@@ -66,9 +70,9 @@ public class AppTest
                 .insertTextToFirstName("Test")
                 .insertTextToFirstLastName("Tester")
                 .insertTextToEmail(email)
-                .selectCountry("Iceland")
-                .insertTextToPhone("98312039123")
-                .selectDropDownPhonePrefix("Hungary")
+                .selectCountry("Ireland")
+                .insertTextToPhone("7753179296")
+                .selectDropDownPhonePrefix("USA")
                 .selectMarketingCheckBox(true)
                 .selectTermsOfUseCheckBox(true)
                 .insertSolvedCaptcha()
@@ -76,7 +80,7 @@ public class AppTest
     }
 
     @Test
-    public void testing(){
+    public void testing() throws InterruptedException {
         TempEmail tempEmail = new TempEmail();
         String email = tempEmail.getEmail();
 
@@ -85,8 +89,15 @@ public class AppTest
         EmailResponse emailResponse = tempEmail.call();
 
         String link = emailResponse.getActivationLink();
-        CreatePasswordPageSteps createPasswordPageStep2s = new CreatePasswordPageSteps(link);
+        CreatePasswordPageSteps createPasswordPageSteps = new CreatePasswordPageSteps(link);
+        createPasswordPageSteps.fillBothPassword("TesterPassword1!");
+        createPasswordPageSteps.clickOnSubmit(true);
+        Thread.sleep(10000);
+        String pinCode = new TwilioSMSHandler().getPINCodeFromSMS();
+        createPasswordPageSteps.insertPINFromSMS(pinCode);
+        createPasswordPageSteps.cilckOnVerify(true);
 
 
     }
+
 }
