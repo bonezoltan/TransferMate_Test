@@ -56,6 +56,11 @@ public class RegisterPageSteps {
         return this;
     }
 
+    public RegisterPageSteps selectDropDownCountryState(String text){
+        registerPage.selectStateCountry(text);
+        return this;
+    }
+
     public RegisterPageSteps selectMarketingCheckBox(boolean check){
         registerPage.setMarketingCheckBox(check);
         return this;
@@ -81,6 +86,8 @@ public class RegisterPageSteps {
         registerPage.clickRegisterButton();
         return new ConfirmEmailAndPhonePage();
     }
+
+
 
     public String getErrorTextTermsOfUse(){
         return registerPage.getTextErrorForTermsOfUse();

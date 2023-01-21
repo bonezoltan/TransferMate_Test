@@ -5,8 +5,12 @@ import org.example.steps.CreatePasswordPageSteps;
 import org.example.steps.RegisterPageSteps;
 import org.example.support.EmailResponse;
 import org.example.support.TempEmail;
+import org.example.support.TwilioSMSHandler;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class AppTest 
@@ -66,9 +70,9 @@ public class AppTest
                 .insertTextToFirstName("Test")
                 .insertTextToFirstLastName("Tester")
                 .insertTextToEmail(email)
-                .selectCountry("Iceland")
-                .insertTextToPhone("98312039123")
-                .selectDropDownPhonePrefix("Hungary")
+                .selectCountry("Ireland")
+                .insertTextToPhone("7753179296")
+                .selectDropDownPhonePrefix("USA")
                 .selectMarketingCheckBox(true)
                 .selectTermsOfUseCheckBox(true)
                 .insertSolvedCaptcha()
@@ -76,17 +80,33 @@ public class AppTest
     }
 
     @Test
-    public void testing(){
+    public void testing() throws InterruptedException {
         TempEmail tempEmail = new TempEmail();
         String email = tempEmail.getEmail();
 
         fillInWithDataAndSpecificEmail(email);
 
-        EmailResponse emailResponse = tempEmail.call();
+        //We need to wait to activation link to be sent
+        TimeUnit.SECONDS.sleep(15);
 
+        EmailResponse emailResponse = new EmailResponse("");
+        try {
+            emailResponse = tempEmail.call();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        
         String link = emailResponse.getActivationLink();
-        CreatePasswordPageSteps createPasswordPageStep2s = new CreatePasswordPageSteps(link);
 
+        CreatePasswordPageSteps createPasswordPageSteps = new CreatePasswordPageSteps(link);
+        createPasswordPageSteps.fillBothPassword("TesterPassword1!");
+        createPasswordPageSteps.clickOnSubmit(true);
+
+
+        String pinCode = new TwilioSMSHandler().getPINCodeFromSMS();
+        createPasswordPageSteps.insertPINFromSMS(pinCode);
+        createPasswordPageSteps.cilckOnVerify(true);
 
     }
+
 }

@@ -1,7 +1,6 @@
 package org.example.pages;
 
 import com.codeborne.selenide.SelenideElement;
-import io.cucumber.java.eo.Se;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -29,7 +28,14 @@ public class CreatePasswordPage extends BasePage {
     SelenideElement submitButton(){
         return $(By.id("button_subscribe"));
     }
-    
+
+    SelenideElement phoneNumberPINCode(){
+        return $(By.id("user_pin"));
+    }
+
+    SelenideElement verifyPhoneNumberButton(){
+        return $(By.id("popup-verify-pin-btn"));
+    }
     public String getWelcomeLabel(){
         return welcomeLabel().text();
     }
@@ -46,5 +52,13 @@ public class CreatePasswordPage extends BasePage {
         if(click) { submitButton().click(); }
     }
 
+    public void insertPhoneNumberPINCode(String code){
+        phoneNumberPINCode().sendKeys(code);
+    }
 
+    public void verifyPhoneNumberSubmitButton(boolean click){
+        if (click){
+            verifyPhoneNumberButton().click();
+        }
+    }
 }
