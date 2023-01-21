@@ -1,7 +1,6 @@
 package org.example.pages;
 
 import com.codeborne.selenide.SelenideElement;
-import io.cucumber.java.eo.Se;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;

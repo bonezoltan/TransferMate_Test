@@ -1,8 +1,6 @@
 package org.example.steps;
 
 import org.example.pages.CreatePasswordPage;
-import org.example.pages.VerifyPhoneNumberPage;
-import org.example.support.EmailResponse;
 
 public class CreatePasswordPageSteps {
 
@@ -30,8 +28,9 @@ public class CreatePasswordPageSteps {
 
     public CreatePasswordPageSteps cilckOnVerify(boolean click){
         if (click){
-            createPasswordPage.clickOnSubmitButton(click);
+            createPasswordPage.verifyPhoneNumberSubmitButton(click);
         }
         return this;
     }
+
 }

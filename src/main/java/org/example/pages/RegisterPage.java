@@ -2,8 +2,6 @@ package org.example.pages;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -77,9 +75,9 @@ public class RegisterPage extends BasePage {
     SelenideElement errorForTermsOfUse(){
         return $(By.id("register_terms_of_use_agree_error"));
     }
-    SelenideElement errorForPhoneNumber() {return $(By.id("register___pin_mobile_number_mobile_phone_error"));}
+    SelenideElement errorForPhoneNumber() {return $(By.id("register_pin_mobile_number_error"));}
     SelenideElement errorForEmailAddress() {return $(By.id("register_email_error"));}
-
+    SelenideElement stateDropDown() {return $(By.id("____state_linked_select"));}
     private SelenideElement getAccountTypeCheckBoxBy(String text) {
         return $(By.id("register_account_type_" + text + "_form_input"));
     }
@@ -128,6 +126,7 @@ public class RegisterPage extends BasePage {
     public void selectPrefixForPhone(String text) {
         phoneNumbberPrefixDropDown().selectOptionContainingText(text);
     }
+    public void selectStateCountry(String text) {stateDropDown().selectOptionContainingText(text);}
 
     public void setPrivacyAndTOUCheckBox(boolean click) {
         if (click) {
@@ -177,7 +176,7 @@ public class RegisterPage extends BasePage {
 
     private String solveCaptcha() throws ScriptException {
         //Preprocessing String for JS Executer
-        String capthca = getCaptchaText().replace("=", "").replace("", " ").trim();
+        String capthca = getCaptchaText().replace("=", "").trim();
 
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");

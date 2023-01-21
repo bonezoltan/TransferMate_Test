@@ -1,22 +1,27 @@
 package org.example;
 
-import com.codeborne.selenide.WebDriverRunner;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.pages.ConfirmEmailAndPhonePage;
+import org.example.steps.CreatePasswordPageSteps;
 import org.example.steps.RegisterPageSteps;
-import org.openqa.selenium.WebDriver;
+import org.example.support.EmailResponse;
+import org.example.support.TempEmail;
+import org.example.support.TwilioSMSHandler;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class RegisterPageStepDefinitions {
     RegisterPageSteps registerPageSteps;
     ConfirmEmailAndPhonePage confirmEmailAndPhonePage;
+    TempEmail tempEmail;
+    EmailResponse emailResponse;
+    CreatePasswordPageSteps createPasswordPageSteps;
+    
     @Given("user is on the TransferMate Sign up page")
     public void userIsOnTheTransferMateSignUpPage() {
         registerPageSteps = new RegisterPageSteps();
@@ -30,6 +35,7 @@ public class RegisterPageStepDefinitions {
     @And("user selects {string} on Country registration")
     public void userSelectsOnCountryRegistration(String country) {
         registerPageSteps.selectCountry(country);
+        
     }
 
 
@@ -108,5 +114,59 @@ public class RegisterPageStepDefinitions {
     @Then("Mobile Phone Number field is highlighted with a label Already exists")
     public void mobilePhoneNumberFieldIsHighlightedWithALabelAlreadyExists() {
         Assert.assertTrue(registerPageSteps.getTextErrorForPhoneNumber().contains("Already exists"),"The error label is missing");
+    }
+
+    @And("user clicks Email address and enters email")
+    public void userClicksEmailAddressAndEntersEmail() {
+        tempEmail = new TempEmail();
+        registerPageSteps.insertTextToEmail(tempEmail.getEmail());
+    }
+
+    @Then("user is redirected to verify mail page")
+    public void userIsRedirectedToVerifyMailPage() throws InterruptedException {
+        //To wait for TM servers to process the sign-up + the tempmail servers to process the received mail
+        TimeUnit.SECONDS.sleep(10);
+    }
+
+    @And("user verify his email")
+    public void userVerifyHisEmail() throws IOException {
+        emailResponse = tempEmail.call();
+        String link = emailResponse.getActivationLink();
+        createPasswordPageSteps = new CreatePasswordPageSteps(link);
+    }
+
+    @Then("user completes the password")
+    public void userCompletesThePassword() {
+        createPasswordPageSteps.fillBothPassword("Testpassword1!");
+        createPasswordPageSteps.clickOnSubmit(true);
+    }
+
+    @And("enters the OTP code from the SMS")
+    public void entersTheOTPCodeFromTheSMS() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(5);
+        String pinCode = new TwilioSMSHandler().getPINCodeFromSMS();
+        createPasswordPageSteps.insertPINFromSMS(pinCode);
+    }
+
+    @And("user clicks on verify phone number")
+    public void userClicksOnVerifyPhoneNumber() {
+        createPasswordPageSteps.cilckOnVerify(true);
+    }
+
+    @Then("user account is registered and verified")
+    public void userAccountIsRegisteredAndVerified() {
+        
+    }
+
+
+    @And("the main profile page is shown")
+    public void theMainProfilePageIsShown() {
+    }
+
+
+    @And("user selects {string} and {string} on Country registration")
+    public void userSelectsAndOnCountryRegistration(String country, String state) {
+        registerPageSteps.selectCountry(country);
+        registerPageSteps.selectDropDownCountryState(state);
     }
 }
