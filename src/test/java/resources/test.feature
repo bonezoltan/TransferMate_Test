@@ -60,9 +60,9 @@ Feature: Test TransferMate SignUp Page functionality
     Then Mobile Phone Number field is highlighted with red border
     Examples: Sign up credentials we are going to use in this scenario
       | accountType |   country | firstName | lastName |       email                    | countryPrefix | phoneNumber |
-      | education   |  Austria  | Edu       | Cation   | edu_ca=12t61642n@tester.com       | Austria       | 32          |
-      | individual  |  Romania  | Individual| Customer | custo32mer_email@individual.com  | Romania       | 54          |
-      | education   |  USA      | Individual| Customer | sdfd23s@individual.com           | USA           | 54          |
+      | education   |  Austria  | Edu       | Cation   | edu_ca=12t61642n@tester.com    | Austria       | 32          |
+      | individual  |  Romania  | Individual| Customer | custo32l@individual.com        | Romania       | 54          |
+      | education   |  USA      | Individual| Customer | sdfd23s@individual.com         | USA           | 54          |
 
 
   @negative
@@ -81,7 +81,7 @@ Feature: Test TransferMate SignUp Page functionality
     Then Mobile Phone Number field is highlighted with red border
     Examples: Sign up credentials we are going to use in this scenario
       | accountType |   country | state  | firstName | lastName |       email                    | countryPrefix | phoneNumber |
-      | education   |  USA  |Oklahoma|Edu       | Cation   | educa12t61642n@tester.com       | USA       | 32          |
+      | education   |  USA      |Oklahoma|Edu        | Cation   | educa12t61642n@tester.com      | USA           | 32          |
 
 
   @negative
@@ -119,7 +119,7 @@ Feature: Test TransferMate SignUp Page functionality
     Then Mobile Phone Number field is highlighted with a label Already exists
     Examples: Sign up credentials we are going to use in this scenario
       | accountType |   country | firstName | lastName |       email                    | countryPrefix | phoneNumber |
-      | education   |  Austria  | Edu       | Cation   | edu_cat64346534ion@tester.com  | Austria       | 43423424234 |
+      | education   |  Austria  | Edu       | Cation   | edu34ion@tester.com            | Austria       | 43423424234 |
 
 
 
