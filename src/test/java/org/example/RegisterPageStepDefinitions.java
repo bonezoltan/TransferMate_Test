@@ -5,12 +5,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.pages.ConfirmEmailAndPhonePage;
+import org.example.pages.LoggedInAndVerifiedPage;
 import org.example.steps.CreatePasswordPageSteps;
 import org.example.steps.RegisterPageSteps;
 import org.example.support.EmailResponse;
 import org.example.support.TempEmail;
 import org.example.support.TwilioSMSHandler;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +23,8 @@ public class RegisterPageStepDefinitions {
     TempEmail tempEmail;
     EmailResponse emailResponse;
     CreatePasswordPageSteps createPasswordPageSteps;
-    
+
+    LoggedInAndVerifiedPage loggedInAndVerifiedPage;
     @Given("user is on the TransferMate Sign up page")
     public void userIsOnTheTransferMateSignUpPage() {
         registerPageSteps = new RegisterPageSteps();
@@ -143,6 +146,7 @@ public class RegisterPageStepDefinitions {
 
     @And("enters the OTP code from the SMS")
     public void entersTheOTPCodeFromTheSMS() throws InterruptedException {
+        //We need to wait to the sms to be sent adn received by Twilio API
         TimeUnit.SECONDS.sleep(5);
         String pinCode = new TwilioSMSHandler().getPINCodeFromSMS();
         createPasswordPageSteps.insertPINFromSMS(pinCode);
@@ -155,12 +159,12 @@ public class RegisterPageStepDefinitions {
 
     @Then("user account is registered and verified")
     public void userAccountIsRegisteredAndVerified() {
-        
     }
 
 
     @And("the main profile page is shown")
     public void theMainProfilePageIsShown() {
+        Assert.assertTrue(loggedInAndVerifiedPage.isProcessingElementVisible(),"The account is being processed element is not shown");
     }
 
 

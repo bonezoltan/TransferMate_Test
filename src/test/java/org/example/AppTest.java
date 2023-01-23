@@ -80,7 +80,7 @@ public class AppTest
     }
 
     @Test
-    public void testing() throws InterruptedException {
+    public void testE2E() throws InterruptedException {
         TempEmail tempEmail = new TempEmail();
         String email = tempEmail.getEmail();
 
